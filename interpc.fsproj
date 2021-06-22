@@ -29,10 +29,10 @@
   <PackageReference Include="FsLexYacc" Version="10.2.0" />
 </ItemGroup>
 <ItemGroup>
-<!-- <MyItem Include="ex1.c" Args ="8"/> -->
+<MyItem Include="mytest.c" Args ="8"/>
 <!-- <MyItem Include="ex2.c" /> -->
 <!-- <MyItem Include="ex3.c" Args ="8"/> -->
-<MyItem Include="ex4.c" Args ="8"/>
+<!-- <MyItem Include="ex4.c" Args ="8"/> -->
 <!-- <MyItem Include="ex5.c" Args ="8"/> -->
 <!-- <MyItem Include="ex6.c" Args ="8"/> -->
 <!-- <MyItem Include="ex7.c" Args =""/>
