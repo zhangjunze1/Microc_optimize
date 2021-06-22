@@ -272,3 +272,107 @@ dotnet  build -t:ccrunx86 microc.fsproj
 #### x86 bugs
 
 - *(p + 2) 指针运算不支持
+
+
+# 上手编译原理大作业
+
+## 解释器部分--interpreter
+
++ Absyn.fs    抽象语法类 与实际实践并无关联 （可写可不写）
++ CLex.fsl    词法分析器--
+	+ 例如定义 for 等关键字
++ CPar.fsy   语法分析器--
+	+ 例如 定义do while 进行使用的时候 （while已经作为关键字使用过 所以你需要利用语法定义实现do while）
++ Parse.fs 最好不要动 语法解析器-- 词法分析程序--语法分析程序（没必要动）
++ Interp.fs 最好不要动 （没必要）
++ interpc.fsproj 此文档是项目调用的fs文档等等 
+
+
+## 解释器具体流程
++ 写CLex.fsl 词法分析器
++ 写CPar.fsy 语法分析器
+
+```
+# 编译解释器 interpc.exe 命令行程序 
+dotnet restore  interpc.fsproj   # 可选
+dotnet clean  interpc.fsproj     # 可选
+dotnet build -v n interpc.fsproj # 构建./bin/Debug/net5.0/interpc.exe ，-v n查看详细生成过程
+
+# 执行解释器
+./bin/Debug/net5.0/interpc.exe ex1.c 8
+dotnet run -p interpc.fsproj ex1.c 8
+dotnet run -p interpc.fsproj -g ex1.c 8  //显示token AST 等调试信息
+
+# one-liner 
+# 自行修改 interpc.fsproj  依次解释多个源文件
+dotnet build -t:ccrun interpc.fsproj以此生成新的 解释器
+```
++ dotnet命令行fsi中运行解释器
+```
+# 命令行运行程序
+dotnet fsi 
+
+#r "nuget: FsLexYacc";;  //添加包引用 必须要的
+#load "Absyn.fs" "Debug.fs" "CPar.fs" "CLex.fs" "Parse.fs" "Interp.fs" "ParseAndRun.fs" ;; // 需要的包的名字
+
+open ParseAndRun;;    //导入模块 ParseAndRun
+fromFile "example\ex1.c";;    //显示 ex1.c的语法树 // 写好的.c文件
+run (fromFile "example\ex1.c") [17];; //解释执行 ex1.c
+run (fromFile "example\ex11.c") [8];; //解释执行 ex11.c
+
+Debug.debug <-  true  //打开调试
+
+run (fromFile "example\ex1.c") [8];; //解释执行 ex1.c
+run (fromFile "example\ex11.c") [8];; //解释执行 ex11.
+#q;;
+```
+## 完整运行步骤
+```
+第一部分是运行把.c文件在解释器的环境下跑一遍得到结果---不通过dotnet fsi
+=======================================================================
+dotnet restore  interpc.fsproj   
+dotnet clean  interpc.fsproj     
+dotnet build -v n interpc.fsproj --解释器重新构建// 这个部分就是把你的 词法分析器和词法分析器新写的部分覆盖掉原来的部分
+
+dotnet run -p interpc.fsproj example/ex1.c 8   // 此处 example/ex1.c 这个部分是你要运行的.c文件  // 8指的是这个文件需要读入的数
+dotnet build -t:ccrun interpc.fsproj  //整个解释的环境 一个个把interpc.fsproj 文件中的配置文件(其余的.fs文件导入)
+
+=======================================================================
+第二部分是通过命令行运行 可以查看语法树 可以机型解释执行 可以进行debug调试  // 拿example/ex1.c 举例 
+=======================================================================
+dotnet restore  interpc.fsproj   
+dotnet clean  interpc.fsproj     
+dotnet build -v n interpc.fsproj --解释器重新构建// 这个部分就是把你的 词法分析器和词法分析器新写的部分覆盖掉原来的部分
+// 进入ploofs/microc 文件夹下
+dotnet fsi  // 进入命令行运行程序
+
+#r "nuget: FsLexYacc";;  //添加包引用 ----#号不要去掉---- 调用编译器的基本的包
+#load "Absyn.fs" "Debug.fs" "CPar.fs" "CLex.fs" "Parse.fs" "Interp.fs" "ParseAndRun.fs" ;; // ---调用你写的词法分析器 语法分析器等等.fs文件
+
+open ParseAndRun;;    // 导入模块 ParseAndRun
+fromFile "example\ex1.c";;    // 显示 ex1.c的语法树
+run (fromFile "example\ex1.c") [17];; //解释执行 ex1.c
+
+Debug.debug <-  true  //打开调试 如果上一步运行错误可以通过debug的模式进行判断
+run (fromFile "example\ex1.c") [8];; //解释执行 ex1.c
+
+#q;; // 退出
+```
+
+
+
+
+
+## 编译器部分--compiler
+
++ Machine.fs （基本不用改）--汇编指令的添加
++ 选择使用的语言进行反编译
+	1. Machine.java                    VM 实现 java
+	2. machine.c                          VM 实现 c 
+	3. machine.cs                  VM 实现 c#
++ machine.csproj                           VM 项目文件
+
++ microc.fsproj 编译器项目文件
+
+.......................未完成
+
