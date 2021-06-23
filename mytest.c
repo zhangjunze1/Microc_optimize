@@ -1,7 +1,7 @@
 // micro-C example 1
 int g ;
 int h[3] ;
-float z ; // 2021.6.23 float 定义无问题
+// 2021.6.23 float 定义无问题
 void main(int n) {
   h[0] = 1;
   // h[4] = 5;
@@ -18,9 +18,7 @@ void main(int n) {
   // 此时解释器，栈式虚拟机，x86程序表现各不相同，可以思考原因
   // 2021.6.22 测试成功 注释|**|可用
   |* print 1; *| 
-  while (n > 0) {
-    print n;
-    n--;
-  }
-  println;
+  n = n--;
+  print n;
+
 }
