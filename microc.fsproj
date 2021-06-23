@@ -32,7 +32,7 @@
 <MyItem Include="example\ex1.c" Args ="8"/>
 <MyItem Include="example\ex2.c" />
 <MyItem Include="example\ex3.c" Args ="8"/>
- <MyItem Include="example\ex4.c" Args ="8"/> 
+<MyItem Include="example\ex4.c" Args ="8"/> 
 <!-- <MyItem Include="example\ex5.c" Args ="8"/> 
 <MyItem Include="example\ex6.c" Args ="8"/>
 <MyItem Include="example\ex7.c" Args =""/>

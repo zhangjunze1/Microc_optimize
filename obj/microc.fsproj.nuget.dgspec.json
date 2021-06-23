@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microc.fsproj": {}
+    "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microc.fsproj": {}
   },
   "projects": {
-    "d:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microc.fsproj": {
+    "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microc.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microc.fsproj",
+        "projectUniqueName": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microc.fsproj",
         "projectName": "microc",
-        "projectPath": "d:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microc.fsproj",
+        "projectPath": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microc.fsproj",
         "packagesPath": "C:\\Users\\41205\\.nuget\\packages\\",
-        "outputPath": "d:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\obj\\",
+        "outputPath": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\41205\\AppData\\Roaming\\NuGet\\NuGet.Config"

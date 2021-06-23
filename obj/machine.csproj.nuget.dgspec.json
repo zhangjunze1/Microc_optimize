@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\machine.csproj": {}
+    "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\machine.csproj": {}
   },
   "projects": {
-    "d:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\machine.csproj": {
+    "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\machine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\machine.csproj",
+        "projectUniqueName": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\machine.csproj",
         "projectName": "machine",
-        "projectPath": "d:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\machine.csproj",
+        "projectPath": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\machine.csproj",
         "packagesPath": "C:\\Users\\41205\\.nuget\\packages\\",
-        "outputPath": "d:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\obj\\",
+        "outputPath": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\41205\\AppData\\Roaming\\NuGet\\NuGet.Config"
