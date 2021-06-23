@@ -1,6 +1,7 @@
 // micro-C example 1
 int g ;
 int h[3] ;
+float z ; // 2021.6.23 float 定义无问题
 void main(int n) {
   h[0] = 1;
   // h[4] = 5;
@@ -15,7 +16,12 @@ void main(int n) {
   // h[12] = 5;
   // 数组越界，程序的行为会异常
   // 此时解释器，栈式虚拟机，x86程序表现各不相同，可以思考原因
-  |* print 1; *|
+
+  // 2021.6.22 测试成功 注释|**|可用
+  |* print 1; *| 
+  // 2021.6.23 开始测试
+  g=0;          
+  print g;
   while (n > 0) {
     print n;
     n = n - 1;

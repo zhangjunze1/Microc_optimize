@@ -15,9 +15,10 @@ let nl = CstI 10 //  \n 的 ASCII 码
 %}
 
 %token <int> CSTINT CSTBOOL  // <int> 是词元的语义值类型
+%token <float32> CSTFLOAT
 %token <string> CSTSTRING NAME
 
-%token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE
+%token CHAR ELSE IF INT FLOAT NULL PRINT PRINTLN RETURN VOID WHILE
 %token PLUS MINUS TIMES DIV MOD
 %token EQ NE GT LT GE LE
 %token NOT SEQOR SEQAND
@@ -108,6 +109,7 @@ Paramdecs:
   | Paramdecs1                          { $1 }
 ;
 
+// 逗号COMMA
 Paramdecs1:
     Vardec                              { [$1]     }
   | Vardec COMMA Paramdecs1             { $1 :: $3 }
@@ -177,6 +179,7 @@ AtExprNotAccess:
     // AMP Access  , &x
     // (3)   
     Const                               { CstI $1             }
+  | ConstFloat                          { ConstFloat($1)      } // Float
   | LPAR ExprNotAccess RPAR             { $2                  } 
   | AMP Access                          { Addr $2             } // 取地址
 ;
@@ -206,7 +209,12 @@ Const:
   | NULL                                { -1       }
 ;
 
+ConstFloat:
+    CSTFLOAT                            { $1       }
+  | MINUS CSTFLOAT                      { - $2     }
+
 Type:
     INT                                 { TypI     }
   | CHAR                                { TypC     }
+  | FLOAT                               { TypeFloat    }
 ;

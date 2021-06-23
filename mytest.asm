@@ -108,6 +108,35 @@ _L1_main_pro_2:
 	push r10
 	;INCSP -1
 	lea rsp, [rsp-8*(-1)]
+	;GVAR 0
+	mov rax ,qword [glovars]
+	sub rax , 0*8
+	push rax
+	;CSTI 0
+	push 0
+	;STI
+	pop r10
+	pop rax
+	mov [rax],r10
+	push r10
+	;INCSP -1
+	lea rsp, [rsp-8*(-1)]
+	;GVAR 0
+	mov rax ,qword [glovars]
+	sub rax , 0*8
+	push rax
+	;LDI
+	pop rax
+	mov rax,[rax]
+	push rax
+	;PRINTI
+	pop rcx
+	push rcx
+	sub rsp, 16
+	call printi
+	add rsp, 16
+	;INCSP -1
+	lea rsp, [rsp-8*(-1)]
 	;GOTO L3
 	jmp L3
 	
@@ -197,12 +226,12 @@ L3:
 	pop rax
 	pop r10
 	cmp r10, rax
-	jl .Lasm2
+	jl .Lasm8
 	push 0
-	jmp .Lasm3
-.Lasm2:
+	jmp .Lasm9
+.Lasm8:
 	push 1
-.Lasm3:
+.Lasm9:
 	;IFNZRO L2
 	pop rax
 	cmp rax,0
