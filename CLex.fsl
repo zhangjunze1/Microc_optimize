@@ -18,6 +18,7 @@ let lexemeAsString lexbuf =
 let keyword s =   
     match s with
     | "char"    -> CHAR    // 返回对应的Token ,Token 定义于 CPar.fsl 文件中
+    | "String"  -> STRING
     | "else"    -> ELSE
     | "false"   -> CSTBOOL 0
     | "if"      -> IF

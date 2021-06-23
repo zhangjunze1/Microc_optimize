@@ -2,7 +2,7 @@
 // 2021.6.23 float 定义无问题
 void main(int n) {
 
-  char a;
-  a = 'A';
-  print a;
+  String a;
+  a = "aaa";
+  print n;
 }

@@ -192,6 +192,7 @@ let rec allocate (typ, x) (env0, nextloc) sto0 : locEnv * store =
         match typ with
         //数组 调用 initSto 分配 i 个空间
         | TypA (t, Some i) -> (nextloc + i, nextloc, initSto nextloc i sto0)
+        | TypS  -> (nextloc+128, nextloc, initSto nextloc 128 sto0)
         // 常规变量默认值是 0
         | _ -> (nextloc, 0, sto0)
 
@@ -292,6 +293,7 @@ and eval e locEnv gloEnv store : int * store =
         (res, setSto store2 loc res)
     | CstI i -> (i, store)
     | ConstChar c    -> ((int c), store)
+    | ConstString s  -> (s.Length,store)
     | Addr acc -> access acc locEnv gloEnv store
     | Prim1 (ope, e1) ->
         let (i1, store1) = eval e1 locEnv gloEnv store

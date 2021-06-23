@@ -38,6 +38,7 @@ type token =
   | RETURN
   | VOID
   | WHILE
+  | STRING
   | CSTSTRING of (string)
   | NAME of (string)
   | CSTCHAR of (char)
@@ -81,6 +82,7 @@ type tokenId =
     | TOKEN_RETURN
     | TOKEN_VOID
     | TOKEN_WHILE
+    | TOKEN_STRING
     | TOKEN_CSTSTRING
     | TOKEN_NAME
     | TOKEN_CSTCHAR
@@ -109,6 +111,7 @@ type nonTerminalId =
     | NONTERM_Access
     | NONTERM_Exprs
     | NONTERM_Exprs1
+    | NONTERM_ConstString
     | NONTERM_Const
     | NONTERM_ConstChar
     | NONTERM_Type

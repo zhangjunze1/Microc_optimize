@@ -8,6 +8,7 @@ type typ =
   | TypC                             (* Type char                   *)
   | TypeFloat                        (* Type float                   *)
   | TypA of typ * int option         (* Array type                  *)
+  | TypS                             (* Type string                *)
   | TypP of typ                      (* Pointer type                *)
                                                                    
 and expr =                           // 表达式，右值                                                
@@ -16,6 +17,7 @@ and expr =                           // 表达式，右值
   | Addr of access                   (* &x   or  &*p   or  &a[e]    *)
   | CstI of int                      (* Constant                    *)
   | ConstChar of char                (*constant char*) 
+  | ConstString of string            (*constant string*)
   | ConstFloat of float32            (*constant float*) // Zhangjz
   | Prim1 of string * expr           (* Unary primitive operator    *)
   | Prim2 of string * expr * expr    (* Binary primitive operator   *)
