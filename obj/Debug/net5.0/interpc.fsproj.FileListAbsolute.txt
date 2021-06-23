@@ -1,6 +1,3 @@
-D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\obj\Debug\net5.0\interpc.fsprojAssemblyReference.cache
-D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\obj\Debug\net5.0\interpc.AssemblyInfoInputs.cache
-D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\obj\Debug\net5.0\interpc.AssemblyInfo.fs
 D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\bin\Debug\net5.0\interpc.exe
 D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\bin\Debug\net5.0\interpc.deps.json
 D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\bin\Debug\net5.0\interpc.runtimeconfig.json
@@ -22,6 +19,9 @@ D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc
 D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\bin\Debug\net5.0\tr\FSharp.Core.resources.dll
 D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\bin\Debug\net5.0\zh-Hans\FSharp.Core.resources.dll
 D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\bin\Debug\net5.0\zh-Hant\FSharp.Core.resources.dll
+D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\obj\Debug\net5.0\interpc.fsprojAssemblyReference.cache
+D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\obj\Debug\net5.0\interpc.AssemblyInfoInputs.cache
+D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\obj\Debug\net5.0\interpc.AssemblyInfo.fs
 D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\obj\Debug\net5.0\interpc.fsproj.CopyComplete
 D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\obj\Debug\net5.0\interpc.dll
 D:\桌面\学科\2021-1\编程语言原理与编译\大作业\gitee版本\microc\obj\Debug\net5.0\interpc.pdb

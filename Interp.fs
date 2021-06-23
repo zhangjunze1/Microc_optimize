@@ -304,6 +304,10 @@ and eval e locEnv gloEnv store : int * store =
             | "printc" ->
                 (printf "%c" (char i1)
                  i1)
+            | "W++" -> i1 + 1
+            | "++W" -> i1 + 1
+            | "W--" -> i1 - 1
+            | "--W" -> i1 - 1
             | _ -> failwith ("unknown primitive " + ope)
 
         (res, store1)

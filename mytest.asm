@@ -34,6 +34,8 @@ asm_main:
 	pop rax
 	sub rax,r10
 	push rax
+	;INCSP 1
+	lea rsp, [rsp-8*(1)]
 	
 ldargs:           ;set up command line arguments on stack:
 	mov rcx, rcx
@@ -226,12 +228,12 @@ L3:
 	pop rax
 	pop r10
 	cmp r10, rax
-	jl .Lasm8
+	jl .Lasm0
 	push 0
-	jmp .Lasm9
-.Lasm8:
+	jmp .Lasm1
+.Lasm0:
 	push 1
-.Lasm9:
+.Lasm1:
 	;IFNZRO L2
 	pop rax
 	cmp rax,0
