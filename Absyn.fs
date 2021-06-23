@@ -19,6 +19,7 @@ and expr =                           // 表达式，右值
   | ConstChar of char                (*constant char*) 
   | ConstString of string            (*constant string*)
   | ConstFloat of float32            (*constant float*) // Zhangjz
+  | Print of string * expr  
   | Prim1 of string * expr           (* Unary primitive operator    *)
   | Prim2 of string * expr * expr    (* Binary primitive operator   *)
   | Andalso of expr * expr           (* Sequential and              *)
