@@ -38,6 +38,7 @@ type token =
   | RETURN
   | VOID
   | WHILE
+  | FOR
   | STRING
   | CSTSTRING of (string)
   | NAME of (string)
@@ -82,6 +83,7 @@ type tokenId =
     | TOKEN_RETURN
     | TOKEN_VOID
     | TOKEN_WHILE
+    | TOKEN_FOR
     | TOKEN_STRING
     | TOKEN_CSTSTRING
     | TOKEN_NAME

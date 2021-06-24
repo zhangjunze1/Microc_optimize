@@ -262,7 +262,14 @@ let rec exec stmt (locEnv: locEnv) (gloEnv: gloEnv) (store: store) : store =
         // _ 表示丢弃e的值,返回 变更后的环境store1
         let (_, store1) = eval e locEnv gloEnv store
         store1
-
+    | For ( dec,e1,opera,body ) ->
+        let (res , store0) = eval dec locEnv gloEnv store
+        let rec loop store1 = 
+            let (ifValue, store2) = eval e1 locEnv gloEnv store1
+            if ifValue<>0 then let (oneend ,store3) = eval opera locEnv gloEnv (exec body locEnv gloEnv store2)
+                               loop store3
+                          else store2
+        loop store0
     | Block stmts ->
 
         // 语句块 解释辅助函数 loop

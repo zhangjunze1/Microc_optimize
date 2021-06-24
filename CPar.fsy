@@ -22,7 +22,7 @@ let nl = CstI 10 //  \n 的 ASCII 码
 %token <char> CSTCHAR
 %token <string> CSTSTRING NAME
 
-%token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE STRING
+%token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE FOR STRING 
 %token PLUS MINUS TIMES DIV MOD SELFPLUS SELFMINUS
 %token EQ NE GT LT GE LE
 %token NOT SEQOR SEQAND
@@ -149,6 +149,7 @@ StmtM:  /* No unbalanced if-else */
   | Block                               { $1                   }
   | IF LPAR Expr RPAR StmtM ELSE StmtM  { If($3, $5, $7)       }
   | WHILE LPAR Expr RPAR StmtM          { While($3, $5)        }
+  | FOR LPAR Expr SEMI Expr SEMI Expr RPAR StmtM { For($3,$5,$7,$9)  }
 ;
 
 StmtU:
