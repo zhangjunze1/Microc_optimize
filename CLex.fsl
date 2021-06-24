@@ -60,8 +60,13 @@ rule Token = parse          // 每个 规则rule 会生成为一个函数，函�
   | '/'             { DIV } 
   | '%'             { MOD }                     
   | '='             { ASSIGN } 
-  | "++"            { SELFPLUS } 
-  | "--"            { SELFMINUS } 
+  | "++"            { ADDONE }
+  | "--"            { MINUSONE }
+  | "+="            { SELFPLUS } 
+  | "-="            { SELFMINUS } 
+  | "*="            { SELFTIMES }
+  | "/="            { SELFDIV }
+  | "%="            { SELFMOD }
   | "=="            { EQ } 
   | "!="            { NE }
   | '>'             { GT }
