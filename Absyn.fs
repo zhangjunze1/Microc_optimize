@@ -19,7 +19,7 @@ and expr =                           // 表达式，右值
   | ConstChar of char                (*constant char*) 
   | ConstString of string            (*constant string*)
   | ConstFloat of float32            (*constant float*) // Zhangjz
-  | Print of string * expr  
+  | Print of string * expr           
   | Prim1 of string * expr           (* Unary primitive operator    *)
   | Prim2 of string * expr * expr    (* Binary primitive operator   *)
   | Andalso of expr * expr           (* Sequential and              *)
@@ -42,11 +42,13 @@ and stmt =
 and stmtordec =                                                    
   | Dec of typ * string              (* Local variable declaration  *)
   | Stmt of stmt                     (* A statement                 *)
+  | DecAndAssign of typ * string * expr
 
 // 顶级声明 可以是函数声明或变量声明
 and topdec = 
   | Fundec of typ option * string * (typ * string) list * stmt
   | Vardec of typ * string
+  | VardecAndAssignment of typ * string * expr
 
 // 程序是顶级声明的列表
 and program = 
