@@ -21,7 +21,7 @@ class Machine {
     if (args.length == 0) 
       System.out.println("Usage: java Machine <programfile> <arg1> ...\n");
     else
-      execute(args, false);
+      execute(args, false);   // Zhangjz - args are all in the String[] args
   }
 
   // These numeric instruction codes must agree with Machine.fs:
@@ -45,7 +45,7 @@ class Machine {
     throws FileNotFoundException, IOException {
     int[] p = readfile(args[0]);                // Read the program from file
     int[] s = new int[STACKSIZE];               // The evaluation stack
-    int[] iargs = new int[args.length-1];
+    int[] iargs = new int[args.length-1];       // Zhangjz --every args will be put into this array // and String change into int
     for (int i=1; i<args.length; i++)           // Push commandline arguments
       iargs[i-1] = Integer.parseInt(args[i]);
     long starttime = System.currentTimeMillis();
@@ -56,14 +56,14 @@ class Machine {
 
   // The machine: execute the code starting at p[pc] 
 
-  static int execcode(int[] p, int[] s, int[] iargs, boolean trace) {
+  static int execcode(int[] p, int[] s, int[] iargs, boolean trace) { // Zhangjz -- p-> instructions     s->empty    iargs-> args
     int bp = -999;	// Base pointer, for local variable access 
     int sp = -1;	// Stack top pointer
     int pc = 0;		// Program counter: next instruction
     for (;;) {
       if (trace) 
         printsppc(s, bp, sp, p, pc);
-      switch (p[pc++]) {
+      switch (p[pc++]) { // form 0 to end
       case CSTI:
         s[sp+1] = p[pc++]; sp++; break;
       case ADD: 
@@ -74,7 +74,7 @@ class Machine {
         s[sp-1] = s[sp-1] * s[sp]; sp--; break;
       case DIV: 
         s[sp-1] = s[sp-1] / s[sp]; sp--; break;
-      case MOD: 
+      case MOD:
         s[sp-1] = s[sp-1] % s[sp]; sp--; break;
       case EQ: 
         s[sp-1] = (s[sp-1] == s[sp] ? 1 : 0); sp--; break;

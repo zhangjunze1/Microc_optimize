@@ -206,9 +206,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\interpc.fsproj",
-      "projectName": "interpc",
-      "projectPath": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\interpc.fsproj",
+      "projectUniqueName": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microc.fsproj",
+      "projectName": "microc",
+      "projectPath": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microc.fsproj",
       "packagesPath": "C:\\Users\\41205\\.nuget\\packages\\",
       "outputPath": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\obj\\",
       "projectStyle": "PackageReference",
