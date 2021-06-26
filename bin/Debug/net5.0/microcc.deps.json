@@ -6,13 +6,13 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "microc/1.0.0": {
+      "microcc/1.0.0": {
         "dependencies": {
           "FSharp.Core": "5.0.0",
-          "FsLexYacc": "10.2.0"
+          "FsLexYacc": "10.0.0"
         },
         "runtime": {
-          "microc.dll": {}
+          "microcc.dll": {}
         }
       },
       "FSharp.Core/5.0.0": {
@@ -64,27 +64,27 @@
           }
         }
       },
-      "FsLexYacc/10.2.0": {
+      "FsLexYacc/10.0.0": {
         "dependencies": {
           "FSharp.Core": "5.0.0",
-          "FsLexYacc.Runtime": "10.2.0"
+          "FsLexYacc.Runtime": "10.0.0"
         }
       },
-      "FsLexYacc.Runtime/10.2.0": {
+      "FsLexYacc.Runtime/10.0.0": {
         "dependencies": {
           "FSharp.Core": "5.0.0"
         },
         "runtime": {
           "lib/netstandard2.0/FsLexYacc.Runtime.dll": {
             "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+            "fileVersion": "0.0.0.0"
           }
         }
       }
     }
   },
   "libraries": {
-    "microc/1.0.0": {
+    "microcc/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -96,19 +96,19 @@
       "path": "fsharp.core/5.0.0",
       "hashPath": "fsharp.core.5.0.0.nupkg.sha512"
     },
-    "FsLexYacc/10.2.0": {
+    "FsLexYacc/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-q7mhuEMm8rvFAJ9jaH1atYCRN96tMbjHarYIDooeMKFCbUuqvep+vA2ijGhA06GZ5BG+jg4TjG6dt/4gR2qHHA==",
-      "path": "fslexyacc/10.2.0",
-      "hashPath": "fslexyacc.10.2.0.nupkg.sha512"
+      "sha512": "sha512-YIaA8wBIrl2EzMPN3VqoaPo5K1+xTmROIUejTDrxqDdBkcNu145UBUhVchMiAWQda6NS5esJIX2Jh83ChKJzzA==",
+      "path": "fslexyacc/10.0.0",
+      "hashPath": "fslexyacc.10.0.0.nupkg.sha512"
     },
-    "FsLexYacc.Runtime/10.2.0": {
+    "FsLexYacc.Runtime/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-d2+gguRIvsn1e7AycVc0r7L1QWptrnUOvQvJLbgkANcS5SjfM/FRgfUGwfqV2cJo3KOFQB5Mqmda/4YTQkkvdA==",
-      "path": "fslexyacc.runtime/10.2.0",
-      "hashPath": "fslexyacc.runtime.10.2.0.nupkg.sha512"
+      "sha512": "sha512-dqieKjfd84tOwlT2C7Bk8Y/otGVfYlVkFhAM0d0nADNG6SChdjN06zB+cVqCF0XTS186ntmFKQVwXVk2RcHmEA==",
+      "path": "fslexyacc.runtime/10.0.0",
+      "hashPath": "fslexyacc.runtime.10.0.0.nupkg.sha512"
     }
   }
 }

@@ -1,18 +1,14 @@
 # 上手编译原理大作业
 
-## 完成情况
-+ |* *| 注释
-
-
 ## 解释器部分--interpreter
 
-+ Absyn.fs    抽象语法类 与实际实践并无关联 （可写可不写）
++ Absyn.fs    抽象语法类 与实际实践并有关联 
 + CLex.fsl    词法分析器--
 	+ 例如定义 for 等关键字
 + CPar.fsy   语法分析器--
 	+ 例如 定义do while 进行使用的时候 （while已经作为关键字使用过 所以你需要利用语法定义实现do while）
-+ Parse.fs 最好不要动 语法解析器-- 词法分析程序--语法分析程序（没必要动）
-+ Interp.fs 最好不要动 （没必要）
++ Parse.fs  最好不要动 语法解析器-- 词法分析程序--语法分析程序（没必要动）
++ Interp.fs 需要更新
 + interpc.fsproj 此文档是项目调用的fs文档等等 
 
 
@@ -78,8 +74,8 @@ dotnet fsi  // 进入命令行运行程序
 #load "Absyn.fs" "Debug.fs" "CPar.fs" "CLex.fs" "Parse.fs" "Interp.fs" "ParseAndRun.fs" ;; // ---调用你写的词法分析器 语法分析器等等.fs文件
 
 open ParseAndRun;;    // 导入模块 ParseAndRun
-fromFile "example\ex1.c";;    // 显示 ex1.c的语法树
-run (fromFile "example\ex1.c") [17];; //解释执行 ex1.c
+fromFile "Mytest.c";;    // 显示 ex1.c的语法树
+run (fromFile "Mytest.c") [17];; //解释执行 ex1.c
 
 Debug.debug <-  true  //打开调试 如果上一步运行错误可以通过debug的模式进行判断
 run (fromFile "example\ex1.c") [8];; //解释执行 ex1.c
@@ -93,8 +89,10 @@ run (fromFile "example\ex1.c") [8];; //解释执行 ex1.c
 
 ## 编译器部分--compiler 
 
-**PS: 解释器做好的功能 编译器一样能用 只要你不动Interp.fs （把.c文件变成.out 机器代码的部分）**
+**PS: 解释器做好的功能 编译器一样能用  （把.c文件变成.out 机器代码的部分）**
 **PS: 编译器的部分的machine.java就是用于反编译 把.out文件 反编译之后运行得出结果**
+
+当然如果添加了关键字就要修改 machine.java的部分去调整 对应的关键字和种别码---（应该是这个术语）
 
 + Machine.fs （基本不用改）--汇编指令的添加
 + 选择使用的语言进行反编译
@@ -113,9 +111,9 @@ run (fromFile "example\ex1.c") [8];; //解释执行 ex1.c
 ```
 第一部分是运行把.c文件在解释器的环境下跑一遍得到结果---不通过dotnet fsi
 =======================================================================
-dotnet restore  microc.fsproj   
-dotnet clean  microc.fsproj   
-dotnet build  microc.fsproj  --编译器重新构建// 这个部分就是把你的 词法分析器和词法分析器新写的部分覆盖掉原来的部分 然后导入.fs文件
+dotnet restore  microcc.fsproj    
+dotnet clean  microcc.fsproj   
+dotnet build  microcc.fsproj    --编译器重新构建// 这个部分就是把你的 词法分析器和词法分析器新写的部分覆盖掉原来的部分 然后导入.fs文件
 =======================================================================
 dotnet run -p microc.fsproj example/ex1.c  // 此处 example/ex1.c 这个部分是你要运行的.c文件  // 8指的是这个文件需要读入的数
 dotnet run -p microc.fsproj -g example/ex1.c // -g 查看调试信息
@@ -128,24 +126,23 @@ dotnet run -p microc.fsproj -g example/ex1.c // -g 查看调试信息
 ```
 第二部分是通过命令行运行 可以机型编译执行 生成.out文件  // 拿mytest.c 举例 
 =======================================================================
-dotnet restore  microc.fsproj   
-dotnet clean  microc.fsproj   
-dotnet build  microc.fsproj  --编译器重新构建// 这个部分就是把你的 词法分析器和词法分析器新写的部分覆盖掉原来的部分 然后导入.fs文件
+dotnet restore  microcc.fsproj    
+dotnet clean  microcc.fsproj   
+dotnet build  microcc.fsproj  --编译器重新构建// 这个部分就是把你的 词法分析器和词法分析器新写的部分覆盖掉原来的部分 然后导入.fs文件
 =======================================================================
 // 进入ploofs/microc 文件夹下
 dotnet fsi  // 进入命令行运行程序
 =======================================================================
 #r "nuget: FsLexYacc";; //添加包引用 ----#号不要去掉---- 调用编译器的基本的包
-#load "Absyn.fs"  "CPar.fs" "CLex.fs" "Debug.fs" "Parse.fs" "Machine.fs" "Backend.fs" "Comp.fs" "ParseAndComp.fs";;  // ---调用你写的词法分析器 语法分析器等等.fs文件
+#load "Absyn.fs"  "CPar.fs" "CLex.fs" "Debug.fs" "Parse.fs" "Machine.fs" "Backend.fs" "Contcomp.fs" "ParseAndComp.fs";;  // ---调用你写的词法分析器 语法分析器等等.fs文件
 =======================================================================
 // 运行编译器
 open ParseAndComp;;   // 导入模块 ParseAndRun
 compileToFile (fromFile "mytest.c") "mytest";;  // 生成了对应的mytest.out文件
 
-// 生成的.out文件如下 机器代码
 ```
 
-![image-20210623110146083](http://zhangjz-tgam-example.oss-cn-hangzhou.aliyuncs.com/activity/uUNIwEFVfZ.jpg?Expires=1624449216&OSSAccessKeyId=LTAI5tBji2779oNNiitohXS7&Signature=UousUmMacPulIws17mVEt99MARs%3D)
+
 
 ```
 第三部分衔接第二部分 // 虚拟机构建与运行
@@ -157,7 +154,7 @@ dotnet clean  machine.csproj
 dotnet run -p machine.csproj mytest.out 3 # 运行虚拟机，执行 mytest.out
 ./bin/Debug/net5.0/machine.exe -t ex9.out 0 
 =======================================================================
-// 用写好的machine.c 用java环境 （我是用java环境）
+// 用machine.c 用java环境 （我是用java环境）
 javac Machine.java // 编译生成新的class文件
 java Machine Mytest.out 3
 

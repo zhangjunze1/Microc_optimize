@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "3K98PvUTHYbcThB1D52iU+r7wcxFlm0/3tDKaDqFA4yRI/k+ME48Y4xcvAzoyRx3WS0YnpEnng6uIjFMJfooHQ==",
+  "dgSpecHash": "mx3TiC886LLajAK2u8/c1laN1xzvD7YZjCf4Vxsq/24p3UQSbmALlX92BV6IgPoDaW7SV0BO3vG+TZrLLTBV+A==",
   "success": true,
-  "projectFilePath": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microc.fsproj",
+  "projectFilePath": "D:\\桌面\\学科\\2021-1\\编程语言原理与编译\\大作业\\gitee版本\\microc\\microcc.fsproj",
   "expectedPackageFiles": [
     "C:\\Users\\41205\\.nuget\\packages\\fsharp.core\\5.0.0\\fsharp.core.5.0.0.nupkg.sha512",
-    "C:\\Users\\41205\\.nuget\\packages\\fslexyacc\\10.2.0\\fslexyacc.10.2.0.nupkg.sha512",
-    "C:\\Users\\41205\\.nuget\\packages\\fslexyacc.runtime\\10.2.0\\fslexyacc.runtime.10.2.0.nupkg.sha512"
+    "C:\\Users\\41205\\.nuget\\packages\\fslexyacc\\10.0.0\\fslexyacc.10.0.0.nupkg.sha512",
+    "C:\\Users\\41205\\.nuget\\packages\\fslexyacc.runtime\\10.0.0\\fslexyacc.runtime.10.0.0.nupkg.sha512"
   ],
   "logs": []
 }
