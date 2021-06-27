@@ -12,9 +12,9 @@ open FSharp.Text.Parsing.ParseHelpers
 *)
 open Absyn
 
-let first  (a, _, _) = a
-let second (_, b, _) = b
-let third  (_, _, c) = c
+let first  (a, _, _) = a    // 取出对应的typ***
+let second (_, b, _) = b    // 取出对应的string***
+let third  (_, _, c) = c    // 取出对应的expr***
 
 // Vardesc 返回的是一个 元组 (g,s)
 // g是类型构造函数，s是变量名

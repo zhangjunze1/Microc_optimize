@@ -21,7 +21,7 @@ class Machine {
     if (args.length == 0) 
       System.out.println("Usage: java Machine <programfile> <arg1> ...\n");
     else
-      execute(args, false);   // Zhangjz - args are all in the String[] args
+      execute(args, true);   // Zhangjz - args are all in the String[] args
   }
 
   // These numeric instruction codes must agree with Machine.fs:

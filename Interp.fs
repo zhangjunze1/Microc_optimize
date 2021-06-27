@@ -104,7 +104,7 @@ type address = int
 
 type store = Map<address, int>
 
-//添加break,continue部分***
+//环境变量存储对应contorl类别的 -- break return continue***
 type controlStat = control option
 
 //空存储
