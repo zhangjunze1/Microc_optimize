@@ -33,6 +33,8 @@ type token =
   | SELFMOD
   | ADDONE
   | MINUSONE
+  | QUESTION
+  | COLON
   | CHAR
   | ELSE
   | IF
@@ -87,6 +89,8 @@ type tokenId =
     | TOKEN_SELFMOD
     | TOKEN_ADDONE
     | TOKEN_MINUSONE
+    | TOKEN_QUESTION
+    | TOKEN_COLON
     | TOKEN_CHAR
     | TOKEN_ELSE
     | TOKEN_IF

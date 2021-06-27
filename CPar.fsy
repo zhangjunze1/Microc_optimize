@@ -22,8 +22,8 @@ let nl = CstI 10 //  \n 的 ASCII 码
 %token <char> CSTCHAR
 %token <string> CSTSTRING NAME
 
-%token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE FOR STRING BREAK CONTINUE DOWHILE DO
-%token PLUS MINUS TIMES DIV MOD SELFPLUS SELFMINUS SELFTIMES SELFDIV SELFMOD ADDONE MINUSONE
+%token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE FOR STRING BREAK CONTINUE DOWHILE DO 
+%token PLUS MINUS TIMES DIV MOD SELFPLUS SELFMINUS SELFTIMES SELFDIV SELFMOD ADDONE MINUSONE QUESTION COLON
 %token EQ NE GT LT GE LE
 %token NOT SEQOR SEQAND
 %token LPAR RPAR LBRACE RBRACE LBRACK RBRACK SEMI COMMA ASSIGN AMP
@@ -37,7 +37,8 @@ let nl = CstI 10 //  \n 的 ASCII 码
 %nonassoc GT LT GE LE
 %left PLUS MINUS
 %left TIMES DIV MOD 
-%left SELFPLUS SELFMINUS SELFTIMES SELFDIV SELFMOD ADDONE MINUSONE
+%left SELFPLUS SELFMINUS SELFTIMES SELFDIV SELFMOD ADDONE MINUSONE 
+%left QUESTION COLON
 %nonassoc NOT AMP 
 %nonassoc LBRACK          /* highest precedence  */
 
@@ -194,6 +195,7 @@ ExprNotAccess:
   | Expr LT    Expr                     { Prim2("<",  $1, $3) }
   | Expr GE    Expr                     { Prim2(">=", $1, $3) }
   | Expr LE    Expr                     { Prim2("<=", $1, $3) }
+  | Expr QUESTION Expr COLON Expr       { Prim3($1, $3, $5)   }
   | Expr SEQAND Expr                    { Andalso($1, $3)     }
   | Expr SEQOR  Expr                    { Orelse($1, $3)      }
 ;

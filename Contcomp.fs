@@ -319,6 +319,11 @@ and cExpr (e : expr) (varEnv : VarEnv) (funEnv : FunEnv) (C : instr list) : inst
             | ">"   -> SWAP :: LT :: C
             | "<="  -> SWAP :: LT :: addNOT C
             | _     -> failwith "unknown primitive 2"))
+    | Prim3 (e1, e2, e3) ->
+      let (jumpend, C1) = makeJump C
+      let (labelse, C2) = addLabel (cExpr e3 varEnv funEnv C1)
+      cExpr e1 varEnv funEnv (IFZERO labelse 
+      :: cExpr e2 varEnv funEnv (addJump jumpend C2))
     | Andalso(e1, e2) ->
       match C with
       | IFZERO lab :: _ ->
