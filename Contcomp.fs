@@ -209,6 +209,16 @@ let rec cStmt stmt (varEnv : VarEnv) (funEnv : FunEnv) (C : instr list) : instr 
       let (jumptest, C1) = 
            makeJump (cExpr e varEnv funEnv (IFNZRO labbegin :: C))
       addJump jumptest (Label labbegin :: cStmt body varEnv funEnv C1)
+    | For (e1, e2, e3, body) ->
+      let labend   = newLabel()                       //结束label
+      let labbegin = newLabel()                       //设置label 
+      let labope   = newLabel()                       //设置 for(,,opera) 的label
+      let Cend = Label labend :: C
+      let (jumptest, C1) =
+        makeJump (cExpr e2 varEnv funEnv (IFNZRO labbegin :: Cend))
+      let C2 = Label labope :: cExpr e3 varEnv funEnv (addINCSP -1 C1)
+      let C3 = cStmt body varEnv funEnv C2    
+      cExpr e1 varEnv funEnv (addINCSP -1 (addJump jumptest  (Label labbegin :: C3) ) )
     | Expr e -> 
       cExpr e varEnv funEnv (addINCSP -1 C) 
     | Block stmts -> 

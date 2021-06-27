@@ -35,6 +35,7 @@ and access =                         //左值，存储的位置
 and stmt =                                                         
   | If of expr * stmt * stmt         (* Conditional                 *)
   | While of expr * stmt             (* While loop                  *)
+  | DoWhile of  stmt * expr          (* DoWhile loop                *)
   | For of expr * expr * expr * stmt (* normal for *)
   | Expr of expr                     (* Expression statement   e;   *)
   | Myctrl of control
