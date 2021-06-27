@@ -38,6 +38,9 @@ and stmt =
   | While of expr * stmt             (* While loop                  *)
   | DoWhile of  stmt * expr          (* DoWhile loop                *)
   | For of expr * expr * expr * stmt (* normal for *)
+  | Switch of expr * stmt list
+  | Case of expr * stmt 
+  | Default of stmt 
   | Expr of expr                     (* Expression statement   e;   *)
   | Myctrl of control
   | Block of stmtordec list          (* Block: grouping and scope   *)

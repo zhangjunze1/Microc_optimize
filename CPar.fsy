@@ -22,7 +22,7 @@ let nl = CstI 10 //  \n 的 ASCII 码
 %token <char> CSTCHAR
 %token <string> CSTSTRING NAME
 
-%token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE FOR STRING BREAK CONTINUE DOWHILE DO 
+%token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE FOR STRING BREAK CONTINUE DOWHILE DO CASE SWITCH DEFAULT
 %token PLUS MINUS TIMES DIV MOD SELFPLUS SELFMINUS SELFTIMES SELFDIV SELFMOD ADDONE MINUSONE QUESTION COLON
 %token EQ NE GT LT GE LE
 %token NOT SEQOR SEQAND
@@ -153,6 +153,7 @@ StmtM:  /* No unbalanced if-else */
   | Block                               { $1                   }
   | IF LPAR Expr RPAR StmtM ELSE StmtM  { If($3, $5, $7)       }
   | WHILE LPAR Expr RPAR StmtM          { While($3, $5)        }
+  | SWITCH LPAR Expr RPAR LBRACE StmtCase RBRACE        { Switch($3,$6)  }
   | FOR LPAR Expr SEMI Expr SEMI Expr RPAR StmtM { For($3,$5,$7,$9)  }
 ;
 
@@ -224,6 +225,13 @@ Exprs:
     /* empty */                         { []       }
   | Exprs1                              { $1       }
 ;
+
+StmtCase:
+    CASE AtExprNotAccess COLON StmtM               { [Case($2,$4)]    }  
+  | DEFAULT COLON StmtM                            { [Default($3)]    }
+  | CASE AtExprNotAccess COLON StmtM StmtCase      { Case($2,$4) :: $5}
+;
+
 
 Exprs1:
     Expr                                { [$1]     }

@@ -51,6 +51,9 @@ type token =
   | CONTINUE
   | DOWHILE
   | DO
+  | CASE
+  | SWITCH
+  | DEFAULT
   | CSTSTRING of (string)
   | NAME of (string)
   | CSTCHAR of (char)
@@ -107,6 +110,9 @@ type tokenId =
     | TOKEN_CONTINUE
     | TOKEN_DOWHILE
     | TOKEN_DO
+    | TOKEN_CASE
+    | TOKEN_SWITCH
+    | TOKEN_DEFAULT
     | TOKEN_CSTSTRING
     | TOKEN_NAME
     | TOKEN_CSTCHAR
@@ -135,6 +141,7 @@ type nonTerminalId =
     | NONTERM_AtExprNotAccess
     | NONTERM_Access
     | NONTERM_Exprs
+    | NONTERM_StmtCase
     | NONTERM_Exprs1
     | NONTERM_ConstString
     | NONTERM_Const
