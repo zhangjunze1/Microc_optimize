@@ -209,6 +209,11 @@ let rec cStmt stmt (varEnv : VarEnv) (funEnv : FunEnv) (C : instr list) : instr 
       let (jumptest, C1) = 
            makeJump (cExpr e varEnv funEnv (IFNZRO labbegin :: C))
       addJump jumptest (Label labbegin :: cStmt body varEnv funEnv C1)
+    | DoWhile(body, e) ->
+        let labbegin = newLabel()
+        let C1 = 
+            cExpr e varEnv funEnv (IFNZRO labbegin :: C)
+        Label labbegin :: cStmt body varEnv funEnv C1 //先执行body
     | For (e1, e2, e3, body) ->
       let labend   = newLabel()                       //结束label
       let labbegin = newLabel()                       //设置label 
