@@ -426,6 +426,12 @@ and eval e locEnv gloEnv store : int * store =
             | _ -> failwith ("unknown primitive " + ope)
 
         (res, store2)
+    | Prim3 (e1, e2, e3) ->
+        let (i1, store1) = eval e1 locEnv gloEnv store
+        if i1 <> 0 then
+            eval e2 locEnv gloEnv store1
+        else
+            eval e3 locEnv gloEnv store1
     | Andalso (e1, e2) ->
         let (i1, store1) as res = eval e1 locEnv gloEnv store
 
