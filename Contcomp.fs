@@ -128,8 +128,8 @@ let rec lookup env x =
 (* A global variable has an absolute address, a local one has an offset: *)
 
 type Var = 
-    | Glovar of int                   (* absolute address in stack           *)
-    | Locvar of int                   (* address relative to bottom of frame *)
+    | Glovar of int                   (* absolute address in stack           *) // 绝对地址
+    | Locvar of int                   (* address relative to bottom of frame *) // 相对地址
 
 (* The variable environment keeps track of global and local variables, and 
    keeps track of next available offset for local variables *)
@@ -139,8 +139,8 @@ type VarEnv = (Var * typ) Env * int
 (* The function environment maps a function name to the function's label, 
    its return type, and its parameter declarations *)
 
-type Paramdecs = (typ * string) list
-type FunEnv = (label * typ option * Paramdecs) Env
+type Paramdecs = (typ * string) list // 函数参数
+type FunEnv = (label * typ option * Paramdecs) Env // 函数定义 名字 + 返回类型 + 函数参数
 
 (* Bind declared variable in varEnv and generate code to allocate it: *)
 
@@ -238,8 +238,11 @@ and bStmtordec stmtOrDec varEnv : bstmtordec * VarEnv =
     | Dec (typ, x) ->
       let (varEnv1, code) = allocate Locvar (typ, x) varEnv 
       (BDec code, varEnv1)
-
-
+    | DecAndAssign (typ,x,e) -> 
+      let (varEnv1, code) = allocate Locvar (typ,x) varEnv
+      (BDec (cAccess (AccVar(x)) varEnv1 []  // cAccess 增加 x变量 对应的 的指令
+                (cExpr e varEnv1 [] (STI :: (addINCSP -1 code))) // 取出这个变量 给他赋值 
+            ), varEnv1)
 (* Compiling micro-C expressions: 
 
    * e       is the expression to compile 编译的表达式

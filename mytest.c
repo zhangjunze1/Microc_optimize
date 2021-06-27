@@ -1,6 +1,5 @@
 void main(int n) {
-  char i;
-  i= 'a';
+  char i = 'a';
   print("%c",i);
 
 }
