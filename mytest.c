@@ -1,5 +1,10 @@
 void main(int n) {
-  char i = 'a';
-  print("%c",i);
+  int i;
+  for (i = 0; i < n; i++)
+  {
+    print("%d",i);
+    continue;
+    print("%d",i);
+  }
 
 }

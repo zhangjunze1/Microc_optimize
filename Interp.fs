@@ -104,6 +104,8 @@ type address = int
 
 type store = Map<address, int>
 
+type controlStat = control option
+
 //空存储
 let emptyStore = Map.empty<address, int>
 
@@ -205,22 +207,22 @@ let rec allocate (typ, x) (env0, nextloc) sto0 : locEnv * store =
 *)
 
 //初始化 解释器环境和store
-let initEnvAndStore (topdecs: topdec list) : locEnv * funEnv * store =
+let initEnvAndStore (topdecs: topdec list) : locEnv * funEnv * store * controlStat=
 
     //包括全局函数和全局变量
     msg $"\ntopdecs:\n{topdecs}\n"
 
-    let rec addv decs locEnv funEnv store =
+    let rec addv decs locEnv funEnv store controlStat=
         match decs with
-        | [] -> (locEnv, funEnv, store)
+        | [] -> (locEnv, funEnv, store, controlStat)
 
         // 全局变量声明  调用allocate 在store上给变量分配空间
         | Vardec (typ, x) :: decr ->
             let (locEnv1, sto1) = allocate (typ, x) locEnv store
-            addv decr locEnv1 funEnv sto1
+            addv decr locEnv1 funEnv sto1 controlStat
 
         //全局函数 将声明(f,(xs,body))添加到全局函数环境 funEnv
-        | Fundec (_, f, xs, body) :: decr -> addv decr locEnv ((f, (xs, body)) :: funEnv) store
+        | Fundec (_, f, xs, body) :: decr -> addv decr locEnv ((f, (xs, body)) :: funEnv) store controlStat
         | VardecAndAssignment (typ,x,e) :: decr ->
             let (loc, store1) = allocate (typ, x) locEnv store  // 分配空间
             // let (loc1,store2) = access (AccVar x) loc gloEnv store1  // 取得x的值放到 loc1 中
@@ -232,71 +234,98 @@ let initEnvAndStore (topdecs: topdec list) : locEnv * funEnv * store =
             //                             else stores
             //                         addv decr loc funEnv store1
             //     | _ ->  eval e loc gloEnv  store2
-            addv decr loc funEnv store1 
+            addv decr loc funEnv store1 controlStat
     // ([], 0) []  默认全局环境
     // locEnv ([],0) 变量环境 ，变量定义为空列表[],下一个空闲地址为0
     // ([("n", 1); ("r", 0)], 2)  表示定义了 变量 n , r 下一个可以用的变量索引是 2
     // funEnv []   函数环境，函数定义为空列表[]
-    addv topdecs ([], 0) [] emptyStore
+    addv topdecs ([], 0) [] emptyStore None
 
 (* ------------------------------------------------------------------- *)
 
 (* Interpreting micro-C statements *)
 
-let rec exec stmt (locEnv: locEnv) (gloEnv: gloEnv) (store: store) : store =
+let rec exec stmt (locEnv: locEnv) (gloEnv: gloEnv) (store: store) (controlStat:controlStat) : store * controlStat=
     match stmt with
     | If (e, stmt1, stmt2) ->
         let (v, store1) = eval e locEnv gloEnv store
 
         if v <> 0 then
-            exec stmt1 locEnv gloEnv store1 //True分支
+            exec stmt1 locEnv gloEnv store1 controlStat //True分支
         else
-            exec stmt2 locEnv gloEnv store1 //False分支
+            exec stmt2 locEnv gloEnv store1 controlStat //False分支
 
     | While (e, body) ->
 
         //定义 While循环辅助函数 loop
-        let rec loop store1 =
-            //求值 循环条件,注意变更环境 store
-            let (v, store2) = eval e locEnv gloEnv store1
-            // 继续循环
-            if v <> 0 then
-                loop (exec body locEnv gloEnv store2)
-            else
-                store2 //退出循环返回 环境store2
+        let rec loop store1 controlStat=
+            match controlStat with
+            | Some(Break)           -> (store1, None)          // 如果有遇到的break，结束该次循环并清除break标记
+            | Some(Return _)        -> (store1, controlStat)   // 如果有未跳出的函数，
+            | _                     ->                         // continue或者没有设置控制状态时，先检查条件然后继续运行
+                //求值 循环条件,注意变更环境 store
+                let (v, store2) = eval e locEnv gloEnv store1
+                // 继续循环
+                if v <> 0 then
+                    let (store1,c) = (exec body locEnv gloEnv store2 None) in
+                        loop store1 c
+                else
+                    (store2,None) //退出循环返回 环境store2
 
-        loop store
-
+        loop store controlStat
+    
     | Expr e ->
         // _ 表示丢弃e的值,返回 变更后的环境store1
         let (_, store1) = eval e locEnv gloEnv store
-        store1
+        (store1 ,controlStat)
     | For ( dec,e1,opera,body ) ->
         let (res , store0) = eval dec locEnv gloEnv store
-        let rec loop store1 = 
-            let (ifValue, store2) = eval e1 locEnv gloEnv store1
-            if ifValue<>0 then let (oneend ,store3) = eval opera locEnv gloEnv (exec body locEnv gloEnv store2)
-                               loop store3
-                          else store2
-        loop store0
+        let rec loop store1 controlStat = 
+             match controlStat with
+             | Some(Break)           -> (store1, None)          // 如果有遇到的break，结束该次循环并清除break标记
+             | Some(Return _)        -> (store1, controlStat)   // 如果有未跳出的函数，
+             | _                     ->                         // continue或者没有设置控制状态时，先检查条件然后继续运行
+                let (ifValue, store2) = eval e1 locEnv gloEnv store1
+                if ifValue<>0 then 
+                    let (store3,c) = exec body locEnv gloEnv store2 None
+                    let (oneend ,store4) = eval opera locEnv gloEnv store3
+                    loop store4 c
+                        else (store2,None)
+        loop store0 controlStat
     | Block stmts ->
 
         // 语句块 解释辅助函数 loop
-        let rec loop ss (locEnv, store) =
-            match ss with
-            | [] -> store
-            //语句块,解释 第1条语句s1
-            // 调用loop 用变更后的环境 解释后面的语句 sr.
-            | s1 :: sr -> loop sr (stmtordec s1 locEnv gloEnv store)
+        let rec loop ss (locEnv, store,(controlStat:controlStat)) =
+            if controlStat.IsSome then
+                let stat = controlStat.Value in
+                    match stat with
+                        | Break
+                        | Continue  -> (store, controlStat)
+                        | Return x  -> (store, controlStat)
+            else
+                 match ss with
+                        | [] -> (store, None)
+                        //语句块,解释 第1条语句s1
+                        // 调用loop 用变更后的环境 解释后面的语句 sr.
+                        | s1 :: sr -> loop sr (stmtordec s1 locEnv gloEnv store controlStat)
+                   
+        loop stmts (locEnv, store, controlStat)
 
-        loop stmts (locEnv, store)
+    | Myctrl ctrl -> 
+        match ctrl with
+            | Return x  -> 
+                if x.IsSome then 
+                    let retVal = eval x.Value locEnv gloEnv store in
+                        (snd retVal, Some(Return (Some (CstI (fst retVal))))) 
+                else (store, Some(ctrl))
+            | _         -> (store, Some(ctrl))    
+    // | Return _ -> failwith "return not implemented" // 解释器没有实现 return
 
-    | Return _ -> failwith "return not implemented" // 解释器没有实现 return
-
-and stmtordec stmtordec locEnv gloEnv store =
+and stmtordec stmtordec locEnv gloEnv store (controlStat:controlStat)=
     match stmtordec with
-    | Stmt stmt -> (locEnv, exec stmt locEnv gloEnv store)
-    | Dec (typ, x) -> allocate (typ, x) locEnv store
+    | Stmt stmt -> let (e, (s, c)) = (locEnv, exec stmt locEnv gloEnv store controlStat) in (e, s, c)
+    | Dec (typ, x) -> 
+        let (e,s) = (allocate (typ, x) locEnv store) in (e,s,controlStat)
     | DecAndAssign (typ, x, e) -> let (loc,store1) = allocate (typ, x) locEnv store // loc是环境 
                                   let (loc1,store2) = access (AccVar x) loc gloEnv store1 // 取得x的值放到 loc1中
                                   let (loc2,store3) = 
@@ -307,7 +336,7 @@ and stmtordec stmtordec locEnv gloEnv store =
                                                                 else stores
                                                             ( s.Length   ,sign 0 store2) 
                                         | _ ->  eval e loc gloEnv  store2
-                                  (loc, setSto store3 loc1 loc2)                   
+                                  (loc, setSto store3 loc1 loc2,controlStat)                   
 
 (* Evaluating micro-C expressions *)
 
@@ -432,8 +461,8 @@ and callfun f es locEnv gloEnv store : int * store =
     let (fBodyEnv, store2) =
         bindVars (List.map snd paramdecs) vs (varEnv, nextloc) store1
 
-    let store3 = exec fBody fBodyEnv gloEnv store2
-    (-111, store3)
+    let (store3,c) = exec fBody fBodyEnv gloEnv store2 None // Break 和 Continue
+    (-111, store3)  // 报错
 
 (* Interpret a complete micro-C program by initializing the store
    and global environments, then invoking its `main' function.
@@ -444,7 +473,7 @@ and callfun f es locEnv gloEnv store : int * store =
 // 可以为空 []
 let run (Prog topdecs) vs =
     //
-    let ((varEnv, nextloc), funEnv, store0) = initEnvAndStore topdecs
+    let ((varEnv, nextloc), funEnv, store0 , controlStat) = initEnvAndStore topdecs
 
     // mainParams 是 main 的参数列表
     //
@@ -481,8 +510,8 @@ let run (Prog topdecs) vs =
     // map [(0, 8)]
     sprintf "\nstore1:\n %A\n" store1
 
-    let endstore =
-        exec mainBody mainBodyEnv (varEnv, funEnv) store1
+    let (endstore,c) =
+        exec mainBody mainBodyEnv (varEnv, funEnv) store1 controlStat
 
     msg $"\nvarEnv:\n{varEnv}"
     msg $"\nStore:\n"

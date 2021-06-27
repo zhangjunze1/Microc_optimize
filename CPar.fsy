@@ -22,7 +22,7 @@ let nl = CstI 10 //  \n 的 ASCII 码
 %token <char> CSTCHAR
 %token <string> CSTSTRING NAME
 
-%token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE FOR STRING 
+%token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE FOR STRING BREAK CONTINUE
 %token PLUS MINUS TIMES DIV MOD SELFPLUS SELFMINUS SELFTIMES SELFDIV SELFMOD ADDONE MINUSONE
 %token EQ NE GT LT GE LE
 %token NOT SEQOR SEQAND
@@ -144,8 +144,10 @@ Stmt:
 
 StmtM:  /* No unbalanced if-else */
     Expr SEMI                           { Expr($1)             }
-  | RETURN SEMI                         { Return None          }
-  | RETURN Expr SEMI                    { Return(Some($2))     }
+  | RETURN SEMI                         { Myctrl (Return None)      }
+  | RETURN Expr SEMI                    { Myctrl (Return(Some($2)))  }
+  | BREAK SEMI                          { Myctrl Break         }
+  | CONTINUE SEMI                       { Myctrl Continue      }
   | Block                               { $1                   }
   | IF LPAR Expr RPAR StmtM ELSE StmtM  { If($3, $5, $7)       }
   | WHILE LPAR Expr RPAR StmtM          { While($3, $5)        }
@@ -173,7 +175,7 @@ ExprNotAccess:
   | Access ADDONE                       { SimpleOpt("Z++", $1, CstI 1 )   }
   | Access MINUSONE                     { SimpleOpt("Z--", $1, CstI 1 )   }
   | ADDONE Access                       { SimpleOpt("++Z", $2, CstI 1 )   }
-  | MINUSONE Access                     { SimpleOpt("--Z", $2, CstI 1 )   }  
+  | MINUSONE Access                     { SimpleOpt("--Z", $2, CstI 1 )   }
   | Access SELFTIMES Expr               { SimpleOpt("*=", $1, $3 ) }
   | Access SELFDIV Expr                 { SimpleOpt("/=", $1, $3 ) }
   | Access SELFPLUS Expr                { SimpleOpt("+=", $1, $3 ) }
