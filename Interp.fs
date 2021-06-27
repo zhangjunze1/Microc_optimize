@@ -104,6 +104,7 @@ type address = int
 
 type store = Map<address, int>
 
+//添加break,continue部分***
 type controlStat = control option
 
 //空存储
@@ -273,6 +274,7 @@ let rec exec stmt (locEnv: locEnv) (gloEnv: gloEnv) (store: store) (controlStat:
                     (store2,None) //退出循环返回 环境store2
 
         loop store controlStat
+     // dowhile循环函数部分
     | DoWhile (body,e) -> 
         let rec loop store1 controlStat=
                 match controlStat with
@@ -290,6 +292,7 @@ let rec exec stmt (locEnv: locEnv) (gloEnv: gloEnv) (store: store) (controlStat:
         // _ 表示丢弃e的值,返回 变更后的环境store1
         let (_, store1) = eval e locEnv gloEnv store
         (store1 ,controlStat)
+     // for循环函数部分
     | For ( dec,e1,opera,body ) ->
         let (res , store0) = eval dec locEnv gloEnv store
         let rec loop store1 controlStat = 
@@ -304,6 +307,7 @@ let rec exec stmt (locEnv: locEnv) (gloEnv: gloEnv) (store: store) (controlStat:
                     loop store4 c
                         else (store2,None)
         loop store0 controlStat
+     
     | Switch (e,body) ->  
                 let (res, store0) = eval e locEnv gloEnv store
                 let rec loop store1 controlStat = 
@@ -356,7 +360,7 @@ let rec exec stmt (locEnv: locEnv) (gloEnv: gloEnv) (store: store) (controlStat:
                         | s1 :: sr -> loop sr (stmtordec s1 locEnv gloEnv store controlStat)
                    
         loop stmts (locEnv, store, controlStat)
-
+      // Myctrl函数部分
     | Myctrl ctrl -> 
         match ctrl with
             | Return x  -> 
@@ -399,6 +403,7 @@ and eval e locEnv gloEnv store : int * store =
     | ConstChar c    -> ((int c), store)
     | ConstString s  -> (s.Length,store)
     | Addr acc -> access acc locEnv gloEnv store
+    // Print函数
     | Print (op , e1) ->    let (i1,store1) = 
                                 eval e1 locEnv gloEnv store
                             let res = 
@@ -422,7 +427,7 @@ and eval e locEnv gloEnv store : int * store =
                  i1)
             | _ -> failwith ("unknown primitive " + ope)
         (res, store1)
-
+    // SimpleOpt运算符函数
     | SimpleOpt (ope,acc,e) ->
         let  (loc, store1) = access acc locEnv gloEnv store // 取acc地址
         let  (i1)  = getSto store1 loc
