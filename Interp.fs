@@ -273,7 +273,19 @@ let rec exec stmt (locEnv: locEnv) (gloEnv: gloEnv) (store: store) (controlStat:
                     (store2,None) //退出循环返回 环境store2
 
         loop store controlStat
-    
+    | DoWhile (body,e) -> 
+        let rec loop store1 controlStat=
+                match controlStat with
+                | Some(Break)           -> (store1, None)          // 如果有遇到的break，结束该次循环并清除break标记
+                | Some(Return _)        -> (store1, controlStat)   // 如果有未跳出的函数，
+                | _                     ->                         // continue或者没有设置控制状态时，先检查条件然后继续运行
+                    let (v, store2) = eval e locEnv gloEnv store1
+                    if v<>0 then 
+                        let (store3,c) = exec body locEnv gloEnv store2 None
+                        loop store3 c
+                    else  (store2,None)  //退出循环返回 环境store2
+        let (store5,c1) = exec body locEnv gloEnv store controlStat
+        loop store5 c1    
     | Expr e ->
         // _ 表示丢弃e的值,返回 变更后的环境store1
         let (_, store1) = eval e locEnv gloEnv store
@@ -292,20 +304,6 @@ let rec exec stmt (locEnv: locEnv) (gloEnv: gloEnv) (store: store) (controlStat:
                     loop store4 c
                         else (store2,None)
         loop store0 controlStat
-    | DoWhile(body,e) -> 
-        let rec loop store1 controlStat=
-                match controlStat with
-                | Some(Break)           -> (store1, None)          // 如果有遇到的break，结束该次循环并清除break标记
-                | Some(Return _)        -> (store1, controlStat)   // 如果有未跳出的函数，
-                | _                     ->                         // continue或者没有设置控制状态时，先检查条件然后继续运行
-                    let (v, store2) = eval e locEnv gloEnv store1
-                    if v<>0 then 
-                        let (store3,c) = exec body locEnv gloEnv store2 None
-                        let (oneend ,store4) = eval opera locEnv gloEnv store3
-                        loop store4 c
-                            else  (store2,None)  //退出循环返回 环境store2
-        let (store5,c1) = exec body locEnv gloEnv store controlStat
-        loop store5 c1
     | Block stmts ->
 
         // 语句块 解释辅助函数 loop
