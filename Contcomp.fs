@@ -226,10 +226,18 @@ let rec cStmt stmt (varEnv : VarEnv) (funEnv : FunEnv) (C : instr list) : instr 
           | (BDec code,  varEnv) :: sr -> code @ pass2 sr C
           | (BStmt stmt, varEnv) :: sr -> cStmt stmt varEnv funEnv (pass2 sr C)
       pass2 stmtsback (addINCSP(snd varEnv - fdepthend) C)
-    | Return None -> 
-      RET (snd varEnv - 1) :: deadcode C
-    | Return (Some e) -> 
-      cExpr e varEnv funEnv (RET (snd varEnv) :: deadcode C)
+    | Myctrl ctrl ->
+            match ctrl with
+            | Return x  -> 
+                if x.IsSome then 
+                  cExpr x.Value varEnv funEnv (RET (snd varEnv) :: deadcode C)
+                else 
+                  RET (snd varEnv - 1) :: deadcode C
+            | _         -> RET (snd varEnv - 1) :: deadcode C
+    // | Return None -> 
+    //   RET (snd varEnv - 1) :: deadcode C
+    // | Return (Some e) -> 
+    //   cExpr e varEnv funEnv (RET (snd varEnv) :: deadcode C)
 
 and bStmtordec stmtOrDec varEnv : bstmtordec * VarEnv =
     match stmtOrDec with 
@@ -271,6 +279,7 @@ and cExpr (e : expr) (varEnv : VarEnv) (funEnv : FunEnv) (C : instr list) : inst
            (match ope with
             | "%d"  -> PRINTI :: C
             | "%c"  -> PRINTC :: C
+            | "%s"  -> PRINTC :: C
             | _        -> failwith "unknown primitive 1")
     | Prim1(ope, e1) ->
       cExpr e1 varEnv funEnv

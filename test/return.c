@@ -6,6 +6,6 @@ void main(int n) {
 }
 
 int fun(int i){
-  i=i+5;
+  i=i+7;
   return i;
 }
